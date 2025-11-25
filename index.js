@@ -82,3 +82,18 @@ app.get('/jokebook/random', (req, res) => {
   const randomIndex = Math.floor(Math.random() * allJokes.length);
   res.json(allJokes[randomIndex]);
 });
+//todo
+app.post('/jokebook/joke/:category', express.json(), (req, res) => {
+  const category = req.params.category;
+  const { joke, response } = req.body;
+  if (!categories.includes(category)) {
+    return res.status(400).json({ error: 'Invalid category' });
+  }
+  const newJoke = { joke, response };
+  if (category === 'funnyJoke') {
+    funnyJoke.push(newJoke);
+  } else if (category === 'lameJoke') {
+    lameJoke.push(newJoke);
+  }
+  res.status(201).json({ message: 'Joke added successfully' });
+});
